@@ -13,6 +13,7 @@ source /etc/profile.d/tripleo-incubator-scripts.sh
 IMAGES_DIR=/opt/stack/images
 CONTROL_IMG=$IMAGES_DIR/overcloud-control.qcow2
 COMPUTE_IMG=$IMAGES_DIR/overcloud-compute.qcow2
+CINDER_IMG=$IMAGES_DIR/overcloud-cinder-volume.qcow2
 BM_KERNEL=$IMAGES_DIR/deploy-ramdisk.kernel
 BM_INITRAMFS=$IMAGES_DIR/deploy-ramdisk.initramfs
 ELEMENTS_PATH=/opt/stack/tripleo-puppet-elements/elements
@@ -50,7 +51,18 @@ if [ ! -f $COMPUTE_IMG ]; then
         neutron-openvswitch-agent heat-cfntools stackuser pip-cache
 fi
 
+if [ ! -f $CINDER_IMG ]; then
+   /opt/stack/diskimage-builder/bin/disk-image-create \
+        -a amd64 \
+        --min-tmpfs 3 \
+        --offline \
+        -o $IMAGES_DIR/overcloud-cinder-volume \
+        fedora cinder \
+        neutron-openvswitch-agent heat-cfntools stackuser pip-cache
+fi
+
 /opt/stack/undercloud-live/bin/baremetal.sh
 
 /opt/stack/tripleo-incubator/scripts/load-image $COMPUTE_IMG
 /opt/stack/tripleo-incubator/scripts/load-image $CONTROL_IMG
+/opt/stack/tripleo-incubator/scripts/load-image $CINDER_IMG
