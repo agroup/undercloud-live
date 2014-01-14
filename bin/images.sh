@@ -58,7 +58,7 @@ if [ ! -f $CINDER_IMG ]; then
         --offline \
         -o $IMAGES_DIR/overcloud-cinder-volume \
         fedora cinder \
-        neutron-openvswitch-agent heat-cfntools stackuser pip-cache
+        heat-cfntools stackuser pip-cache
 fi
 
 /opt/stack/undercloud-live/bin/baremetal.sh
