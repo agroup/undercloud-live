@@ -71,7 +71,7 @@ git fetch https://review.openstack.org/openstack/diskimage-builder refs/changes/
 rm elements/base/finalise.d/52-force-text-mode-console
 popd
 
-git clone https://github.com/agroup/tripleo-puppet-elements
+git clone --branch=cinder https://github.com/rbrady/tripleo-puppet-elements
 
 git clone https://github.com/openstack/tripleo-heat-templates.git
 pushd tripleo-heat-templates
